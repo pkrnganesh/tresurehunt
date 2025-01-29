@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Hunt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('Avengers.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                background: url('avg.png') no-repeat center center fixed;
+                background-size: cover;
+            }
+        }
+
+        .login-box, .set-selection, .container {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .login-box input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 90%;
+            border: 1px solid #555;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #00b354;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #222;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            display: none;
+            max-width: 400px;
+            width: 90%;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .popup input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 95%;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        #algorithm {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            font-family: Monaco, monospace;
+            font-size: 18px;
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+            border: 1px solid #444;
+            margin: 15px 0;
+        }
+
+        .set-selection button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .set-selection button:hover {
+            background-color: #00b354;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Login Box -->
+    <div class="login-box" id="adminLogin">
+        <h2>Admin Login</h2>
+        <input type="text" id="adminUser" placeholder="Username">
+        <input type="password" id="adminPass" placeholder="Password">
+        <button class="btn" onclick="checkAdmin()">Login</button>
+    </div>
+
+    <!-- Set Selection -->
+    <div class="set-selection" id="setSelection" style="display:none;">
+        <h2>Select a Set</h2>
+        <button onclick="startGame(0)">Set 1</button>
+        <button onclick="startGame(1)">Set 2</button>
+        <button onclick="startGame(2)">Set 3</button>
+        <button onclick="startGame(3)">Set 4</button>
+        <button onclick="startGame(4)">Set 5</button>
+    </div>
+    
+    <!-- Player Game Container -->
+    <div class="container" id="gameContainer" style="display:none;">
+        <h1>Squid Hunt!</h1>
+        <p>Click the button below to start solving algorithms and uncover clues!</p>
+        <button class="btn" onclick="showPopup()">Next</button>
+        <div id="clue">Clue will appear here once you solve the algorithm!</div>
+    </div>
+
+    <!-- Popup for Algorithm -->
+    <div class="popup" id="popup">
+        <h3>Solve the Algorithm:</h3>
+        <p id="algorithm"></p>
+        <input type="text" id="answer" placeholder="Enter your answer">
+        <button onclick="checkAnswer()">Submit</button>
+    </div>
+
+    <!-- Wrong Answer Popup -->
+    <div class="popup" id="wrongPopup">
+        <h3>❌ Incorrect Answer</h3>
+        <p id="wrongMessage"></p>
+        <button onclick="closeWrongPopup()">Try Again</button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="wrongSound">
+        <source src="wrong.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="correctSound">
+        <source src="correct.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const adminCredentials = { username: "admin", password: "1234" };
+
+        function checkAdmin() {
+            const user = document.getElementById("adminUser").value;
+            const pass = document.getElementById("adminPass").value;
+            
+            if (user === adminCredentials.username && pass === adminCredentials.password) {
+                document.getElementById("adminLogin").style.display = "none";
+                document.getElementById("setSelection").style.display = "block";
+            } else {
+                alert("❌ Invalid Credentials!");
+            }
+        }
+
+        const algorithmSets = [
+            [ 
+                { question: "What is the output?\n2 + 6", answer: "8", clue: "Find your next clue at the library!" },
+                { question: "What is the output?\n8 + 12", answer: "20", clue: "Look near the water cooler!" },
+                { question: "What is the output?\n25 - 17", answer: "8", clue: "Your next clue is in the cafeteria!" },
+                { question: "What is the output?\n6 × 7", answer: "42", clue: "Check near the printer in the hallway!" },
+                { question: "What is the output?\n40 ÷ 8", answer: "5", clue: "Look around the back of the office!" }
+            ],
+            [ 
+                { question: "Calculate:\n2³", answer: "8", clue: "The computer lab has your next hint!" },
+                { question: "Calculate:\n200 ÷ 10", answer: "20", clue: "Check the whiteboard in Room 101!" },
+                { question: "Calculate:\n15 + 30", answer: "45", clue: "Look behind the vending machine!" },
+                { question: "Calculate:\n45 - 27", answer: "18", clue: "Your next clue is near the exit!" },
+                { question: "Calculate:\n9 × 5", answer: "45", clue: "Check the bulletin board in the hallway!" }
+            ],
+            [ 
+                { question: "Find the square root:\n√144", answer: "12", clue: "Find your clue near the main door!" },
+                { question: "Calculate:\n75 ÷ 3", answer: "25", clue: "Check the meeting room!" },
+                { question: "Calculate:\n7 × 5", answer: "35", clue: "Look near the staircase!" },
+                { question: "Calculate:\n90 - 70", answer: "20", clue: "Your next clue is in the kitchen!" },
+                { question: "Calculate:\n15 + 9", answer: "24", clue: "Check under the desk in Room 202!" }
+            ],
+            [ 
+                { question: "Calculate:\n3²", answer: "9", clue: "The next clue is in the library!" },
+                { question: "Calculate:\n7 × 4", answer: "28", clue: "Find the next clue at the elevator!" },
+                { question: "Calculate:\n125 - 50", answer: "75", clue: "Look near the first floor restroom!" },
+                { question: "Calculate:\n54 ÷ 6", answer: "9", clue: "Check the parking lot!" },
+                { question: "Calculate:\n15 × 3", answer: "45", clue: "The next clue is hidden in the lounge!" }
+            ],
+            [ 
+                { question: "Calculate:\n4²", answer: "16", clue: "Check the printer on the second floor!" },
+                { question: "Calculate:\n150 ÷ 5", answer: "30", clue: "Look behind the desk in Room 303!" },
+                { question: "Calculate:\n16 × 6", answer: "96", clue: "Your next clue is near the vending machine!" },
+                { question: "Calculate:\n35 + 15", answer: "50", clue: "Find your clue near the meeting room!" },
+                { question: "Calculate:\n44 - 26", answer: "18", clue: "The next clue is on the third floor balcony!" }
+            ]
+        ];
+
+        let currentSet = 0;
+        let currentAlgorithmIndex = 0;
+
+        function startGame(setIndex) {
+            currentSet = setIndex;
+            currentAlgorithmIndex = 0;
+            document.getElementById('setSelection').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+            loadAlgorithm();
+        }
+
+        function loadAlgorithm() {
+            if (currentAlgorithmIndex < algorithmSets[currentSet].length) {
+                const algorithm = document.getElementById('algorithm');
+                algorithm.textContent = algorithmSets[currentSet][currentAlgorithmIndex].question;
+                
+                // Prevent right-click on algorithm
+                algorithm.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+                
+                // Prevent drag on algorithm
+                algorithm.addEventListener('dragstart', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            }
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim();
+            const correctAnswer = algorithmSets[currentSet][currentAlgorithmIndex].answer;
+
+            if (userAnswer === correctAnswer) {
+                document.getElementById("correctSound").play();
+                
+                document.getElementById('clue').textContent = `🎉 Your clue: "${algorithmSets[currentSet][currentAlgorithmIndex].clue}"`;
+                document.getElementById('clue').style.display = 'block';
+                document.getElementById('popup').style.display = 'none';
+
+                currentAlgorithmIndex++;
+                
+                if (currentAlgorithmIndex < algorithmSets[currentSet].length) {
+                    document.querySelector('.btn').textContent = 'Next';
+                } else {
+                    document.querySelector('.btn').textContent = '🎯 You have completed the treasure hunt!';
+                    document.querySelector('.btn').disabled = true;
+                }
+            } else {
+                document.getElementById("wrongSound").play();
+                document.getElementById('popup').style.display = 'none';
+                showWrongPopup("That's not correct. Try again!");
+            }
+        }
+
+        function showWrongPopup(message) {
+            document.getElementById('wrongMessage').textContent = message;
+            document.getElementById('wrongPopup').style.display = 'block';
+        }
+
+        function closeWrongPopup() {
+            document.getElementById('wrongPopup').style.display = 'none';
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('answer').value = '';
+        }
+
+        // Prevent copy shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Prevent right-click on popup
+        document.getElementById('popup').addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    </script>
+</body>
+</html>
