@@ -17,6 +17,13 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            animation: moveBackground 20s linear infinite;
+            cursor: url('magnifying-glass.png'), auto;
+        }
+
+        @keyframes moveBackground {
+            from { background-position: 0 0; }
+            to { background-position: 100% 0; }
         }
 
         @media screen and (max-width: 768px) {
@@ -35,6 +42,12 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             max-width: 500px;
             width: 90%;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .login-box input {
@@ -55,10 +68,11 @@
             color: white;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.2s, background-color 0.3s;
         }
 
         .btn:hover {
+            transform: scale(1.1);
             background-color: #00b354;
         }
 
@@ -79,6 +93,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .popup input {
@@ -119,6 +134,11 @@
         .set-selection button:hover {
             background-color: #00b354;
         }
+
+        #timer {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -143,7 +163,8 @@
     <!-- Player Game Container -->
     <div class="container" id="gameContainer" style="display:none;">
         <h1>Squid Hunt!</h1>
-        <p>Click the button below to start solving algorithms and uncover clues!</p>
+        <p>Welcome, Detective! Solve these algorithms to uncover the mystery of the missing treasure.</p>
+        <div id="timer">Time Left: 1min</div>
         <button class="btn" onclick="showPopup()">Next</button>
         <div id="clue">Clue will appear here once you solve the algorithm!</div>
     </div>
@@ -172,6 +193,11 @@
         <source src="correct.mp3" type="audio/mpeg">
     </audio>
 
+    <audio id="backgroundMusic" loop>
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
         const adminCredentials = { username: "admin", password: "1234" };
 
@@ -182,6 +208,7 @@
             if (user === adminCredentials.username && pass === adminCredentials.password) {
                 document.getElementById("adminLogin").style.display = "none";
                 document.getElementById("setSelection").style.display = "block";
+                document.getElementById('backgroundMusic').play();
             } else {
                 alert("❌ Invalid Credentials!");
             }
@@ -227,6 +254,7 @@
 
         let currentSet = 0;
         let currentAlgorithmIndex = 0;
+        let timer;
 
         function startGame(setIndex) {
             currentSet = setIndex;
@@ -236,6 +264,7 @@
         }
 
         function showPopup() {
+            startTimer();
             document.getElementById('popup').style.display = 'block';
             loadAlgorithm();
         }
@@ -264,6 +293,12 @@
             const correctAnswer = algorithmSets[currentSet][currentAlgorithmIndex].answer;
 
             if (userAnswer === correctAnswer) {
+                clearInterval(timer); // Stop the timer
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
                 document.getElementById("correctSound").play();
                 
                 document.getElementById('clue').textContent = `🎉 Your clue: "${algorithmSets[currentSet][currentAlgorithmIndex].clue}"`;
@@ -294,6 +329,20 @@
             document.getElementById('wrongPopup').style.display = 'none';
             document.getElementById('popup').style.display = 'block';
             document.getElementById('answer').value = '';
+        }
+
+        function startTimer() {
+            let timeLeft = 60;
+            document.getElementById('timer').textContent = `Time Left: ${timeLeft}s`;
+            clearInterval(timer); // Clear any existing timer
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Time Left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showWrongPopup("Time's up! Try again.");
+                }
+            }, 1000);
         }
 
         // Prevent copy shortcuts
