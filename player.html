@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Squid Hunt</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background: url('Avengers.png') no-repeat center center fixed;
@@ -15,176 +21,189 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            animation: moveBackground 20s linear infinite;
+            min-height: 100vh;
+            padding: 20px;
             cursor: url('magnifying-glass.png'), auto;
+            animation: moveBackground 20s linear infinite;
         }
 
         @keyframes moveBackground {
-            from { background-position: 0 0; }
-            to { background-position: 100% 0; }
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+            100% { background-position: 0% 0%; }
         }
 
-        @media screen and (max-width: 768px) {
-            body {
-                background: url('avg.png') no-repeat center center fixed;
-                background-size: cover;
-            }
-        }
-
-        .login-box, .set-selection, .container {
-            text-align: center;
-            padding: 20px;
-            border: 2px solid #fff;
+        .container, .set-selection {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
             border-radius: 15px;
-            background-color: rgba(0, 0, 0, 0.7);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 90%;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .login-box input {
-            padding: 10px;
-            margin: 10px 0;
-            width: 90%;
-            border: 1px solid #555;
-            border-radius: 5px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, background-color 0.3s;
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-            background-color: #00b354;
-        }
-
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #222;
-            color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-            display: none;
-            max-width: 400px;
+            max-width: 800px;
             width: 90%;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            animation: fadeIn 0.5s ease-in-out;
+            margin: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .popup input {
-            padding: 10px;
-            margin-bottom: 10px;
-            width: 95%;
-            border: 1px solid #555;
-            border-radius: 5px;
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        #algorithm {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            font-family: Monaco, monospace;
-            font-size: 18px;
-            padding: 15px;
-            background-color: #2a2a2a;
-            border-radius: 5px;
-            border: 1px solid #444;
-            margin: 15px 0;
-        }
-
-        .set-selection button {
-            margin: 5px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .set-selection button:hover {
-            background-color: #00b354;
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #fff;
         }
 
         #timer {
-            font-size: 20px;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        #algorithm {
+            font-family: 'Courier New', Courier, monospace;
+            text-align: left;
+            white-space: pre;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            line-height: 1.4;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #clue {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            animation: popupIn 0.3s ease-out;
+        }
+
+        @keyframes popupIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .popup h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .popup p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .popup-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .popup-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <!-- Admin Login Box -->
-    <div class="login-box" id="adminLogin">
-        <h2>Admin Login</h2>
-        <input type="text" id="adminUser" placeholder="Username">
-        <input type="password" id="adminPass" placeholder="Password">
-        <button class="btn" onclick="checkAdmin()">Login</button>
-    </div>
-
-    <!-- Set Selection -->
-    <div class="set-selection" id="setSelection" style="display:none;">
-        <h2>Select a Set</h2>
-        <button onclick="startGame(0)">Set 1</button>
-        <button onclick="startGame(1)">Set 2</button>
-        <button onclick="startGame(2)">Set 3</button>
-        <button onclick="startGame(3)">Set 4</button>
-        <button onclick="startGame(4)">Set 5</button>
+    <div class="set-selection" id="setSelection">
+        <h2>Select a Team Number</h2>
+        <input type="number" id="teamNumber" placeholder="Enter team number (1-20)" min="1" max="20">
+        <button class="btn" onclick="startGame()">Start Game</button>
     </div>
     
-    <!-- Player Game Container -->
     <div class="container" id="gameContainer" style="display:none;">
         <h1>Squid Hunt!</h1>
-        <p>Welcome, Detective! Solve these algorithms to uncover the mystery of the missing treasure.</p>
         <div id="timer">Time Left: 1min</div>
-        <button class="btn" onclick="showPopup()">Next</button>
-        <div id="clue">Clue will appear here once you solve the algorithm!</div>
-    </div>
-
-    <!-- Popup for Algorithm -->
-    <div class="popup" id="popup">
-        <h3>Solve the Algorithm:</h3>
-        <p id="algorithm"></p>
+        <div id="algorithm"></div>
         <input type="text" id="answer" placeholder="Enter your answer">
-        <button onclick="checkAnswer()">Submit</button>
+        <button class="btn" onclick="checkAnswer()">Submit</button>
+        <button class="btn" id="nextButton" onclick="nextQuestion()" style="display:none;">Next Question</button>
+        <p id="clue" style="display:none;"></p>
     </div>
 
-    <!-- Wrong Answer Popup -->
-    <div class="popup" id="wrongPopup">
-        <h3>❌ Incorrect Answer</h3>
-        <p id="wrongMessage"></p>
-        <button onclick="closeWrongPopup()">Try Again</button>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <h3 id="popupTitle"></h3>
+            <p id="popupMessage"></p>
+            <button class="popup-btn" onclick="closePopup()">OK</button>
+        </div>
     </div>
 
-    <!-- Audio Elements -->
     <audio id="wrongSound">
         <source src="wrong.mp3" type="audio/mpeg">
     </audio>
@@ -199,164 +218,214 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
     <script>
-        const adminCredentials = { username: "admin", password: "1234" };
+        const totalTeams = 20;
 
-        function checkAdmin() {
-            const user = document.getElementById("adminUser").value;
-            const pass = document.getElementById("adminPass").value;
-            
-            if (user === adminCredentials.username && pass === adminCredentials.password) {
-                document.getElementById("adminLogin").style.display = "none";
-                document.getElementById("setSelection").style.display = "block";
-                document.getElementById('backgroundMusic').play();
-            } else {
-                alert("❌ Invalid Credentials!");
+        const algorithms = [
+            { 
+                question: `#include <stdio.h>
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int *ptr = arr;
+    printf("%d", *(ptr + 2));
+    return 0;
+}`,
+                answer: "3"
+            },
+            { 
+                question: `#include <stdio.h>
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int main() {
+    int x = 5, y = 10;
+    swap(&x, &y);
+    printf("%d", x);
+    return 0;
+}`,
+                answer: "10"
+            },
+            { 
+                question: `#include <stdio.h>
+int main() {
+    int x = 5;
+    int *p = &x;
+    int **q = &p;
+    printf("%d", **q);
+    return 0;
+}`,
+                answer: "5"
+            },
+            { 
+                question: `#include <stdio.h>
+void fun(int *ptr) {
+    *ptr = *ptr + 5;
+}
+int main() {
+    int arr[] = {10, 20, 30};
+    fun(&arr[1]);
+    printf("%d", arr[1]);
+    return 0;
+}`,
+                answer: "25"
+            },
+            { 
+                question: `#include <stdio.h>
+int main() {
+    int a = 10;
+    int *p = &a;
+    *p = 20;
+    printf("%d", a);
+    return 0;
+}`,
+                answer: "20"
+            }
+        ];
+
+        // Clues for teams 1-10
+        const cluesTeam1to10 = [
+            "Your next clue is in Room 101!",
+            "Check behind the main notice board!",
+            "Look under the red chair in the library!",
+            "Find it near the water cooler!",
+            "Search near the principal's office!"
+        ];
+
+        // Clues for teams 11-20
+        const cluesTeam11to20 = [
+            "Check the computer lab entrance!",
+            "Look inside the sports equipment room!",
+            "Find it near the cafeteria counter!",
+            "Search behind the auditorium curtain!",
+            "Your next clue is in the science lab!"
+        ];
+
+        let teamData = {};
+        let currentTeam = null;
+        let timer;
+
+        function showPopup(title, message) {
+            document.getElementById('popupTitle').textContent = title;
+            document.getElementById('popupMessage').textContent = message;
+            document.getElementById('popupOverlay').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+        }
+
+        window.onload = function() {
+            initializeTeams();
+            document.getElementById('backgroundMusic').play().catch(e => console.log("Audio autoplay blocked"));
+        }
+
+        function initializeTeams() {
+            for (let i = 1; i <= totalTeams; i++) {
+                teamData[`team${i}`] = {
+                    algorithms: shuffleArray([...algorithms]),
+                    currentAlgorithmIndex: 0
+                };
             }
         }
 
-        const algorithmSets = [
-            [ 
-                { question: "What is the output?\n2 + 6", answer: "8", clue: "Find your next clue at the library!" },
-                { question: "What is the output?\n8 + 12", answer: "20", clue: "Look near the water cooler!" },
-                { question: "What is the output?\n25 - 17", answer: "8", clue: "Your next clue is in the cafeteria!" },
-                { question: "What is the output?\n6 × 7", answer: "42", clue: "Check near the printer in the hallway!" },
-                { question: "What is the output?\n40 ÷ 8", answer: "5", clue: "Look around the back of the office!" }
-            ],
-            [ 
-                { question: "Calculate:\n2³", answer: "8", clue: "The computer lab has your next hint!" },
-                { question: "Calculate:\n200 ÷ 10", answer: "20", clue: "Check the whiteboard in Room 101!" },
-                { question: "Calculate:\n15 + 30", answer: "45", clue: "Look behind the vending machine!" },
-                { question: "Calculate:\n45 - 27", answer: "18", clue: "Your next clue is near the exit!" },
-                { question: "Calculate:\n9 × 5", answer: "45", clue: "Check the bulletin board in the hallway!" }
-            ],
-            [ 
-                { question: "Find the square root:\n√144", answer: "12", clue: "Find your clue near the main door!" },
-                { question: "Calculate:\n75 ÷ 3", answer: "25", clue: "Check the meeting room!" },
-                { question: "Calculate:\n7 × 5", answer: "35", clue: "Look near the staircase!" },
-                { question: "Calculate:\n90 - 70", answer: "20", clue: "Your next clue is in the kitchen!" },
-                { question: "Calculate:\n15 + 9", answer: "24", clue: "Check under the desk in Room 202!" }
-            ],
-            [ 
-                { question: "Calculate:\n3²", answer: "9", clue: "The next clue is in the library!" },
-                { question: "Calculate:\n7 × 4", answer: "28", clue: "Find the next clue at the elevator!" },
-                { question: "Calculate:\n125 - 50", answer: "75", clue: "Look near the first floor restroom!" },
-                { question: "Calculate:\n54 ÷ 6", answer: "9", clue: "Check the parking lot!" },
-                { question: "Calculate:\n15 × 3", answer: "45", clue: "The next clue is hidden in the lounge!" }
-            ],
-            [ 
-                { question: "Calculate:\n4²", answer: "16", clue: "Check the printer on the second floor!" },
-                { question: "Calculate:\n150 ÷ 5", answer: "30", clue: "Look behind the desk in Room 303!" },
-                { question: "Calculate:\n16 × 6", answer: "96", clue: "Your next clue is near the vending machine!" },
-                { question: "Calculate:\n35 + 15", answer: "50", clue: "Find your clue near the meeting room!" },
-                { question: "Calculate:\n44 - 26", answer: "18", clue: "The next clue is on the third floor balcony!" }
-            ]
-        ];
-
-        let currentSet = 0;
-        let currentAlgorithmIndex = 0;
-        let timer;
-
-        function startGame(setIndex) {
-            currentSet = setIndex;
-            currentAlgorithmIndex = 0;
-            document.getElementById('setSelection').style.display = 'none';
-            document.getElementById('gameContainer').style.display = 'block';
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
         }
 
-        function showPopup() {
-            startTimer();
-            document.getElementById('popup').style.display = 'block';
+        function startGame() {
+            const teamNumber = parseInt(document.getElementById("teamNumber").value);
+            
+            if (teamNumber < 1 || teamNumber > totalTeams) {
+                showPopup("Invalid Team", "Please enter a valid team number (1-20).");
+                return;
+            }
+
+            currentTeam = `team${teamNumber}`;
+            document.getElementById('setSelection').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
             loadAlgorithm();
+            startTimer();
         }
 
         function loadAlgorithm() {
-            if (currentAlgorithmIndex < algorithmSets[currentSet].length) {
-                const algorithm = document.getElementById('algorithm');
-                algorithm.textContent = algorithmSets[currentSet][currentAlgorithmIndex].question;
-                
-                // Prevent right-click on algorithm
-                algorithm.addEventListener('contextmenu', function(e) {
-                    e.preventDefault();
-                    return false;
-                });
-                
-                // Prevent drag on algorithm
-                algorithm.addEventListener('dragstart', function(e) {
-                    e.preventDefault();
-                    return false;
-                });
+            let team = teamData[currentTeam];
+            if (team.currentAlgorithmIndex < team.algorithms.length) {
+                document.getElementById('algorithm').textContent = 
+                    team.algorithms[team.currentAlgorithmIndex].question;
+                document.getElementById('clue').style.display = 'none';
+                document.getElementById('nextButton').style.display = 'none';
+            }
+        }
+
+        function getClueForTeam(teamNumber, clueIndex) {
+            if (teamNumber <= 10) {
+                return cluesTeam1to10[clueIndex];
+            } else {
+                return cluesTeam11to20[clueIndex];
             }
         }
 
         function checkAnswer() {
             const userAnswer = document.getElementById('answer').value.trim();
-            const correctAnswer = algorithmSets[currentSet][currentAlgorithmIndex].answer;
-
-            if (userAnswer === correctAnswer) {
-                clearInterval(timer); // Stop the timer
+            let team = teamData[currentTeam];
+            let currentAlgorithm = team.algorithms[team.currentAlgorithmIndex];
+            let teamNumber = parseInt(currentTeam.replace('team', ''));
+            
+            if (userAnswer === currentAlgorithm.answer) {
+                clearInterval(timer);
+                document.getElementById("correctSound").play().catch(e => console.log("Audio play blocked"));
                 confetti({
                     particleCount: 100,
                     spread: 70,
                     origin: { y: 0.6 }
                 });
-                document.getElementById("correctSound").play();
-                
-                document.getElementById('clue').textContent = `🎉 Your clue: "${algorithmSets[currentSet][currentAlgorithmIndex].clue}"`;
-                document.getElementById('clue').style.display = 'block';
-                document.getElementById('popup').style.display = 'none';
 
-                currentAlgorithmIndex++;
+                let clueIndex = team.currentAlgorithmIndex;
+                let clue = getClueForTeam(teamNumber, clueIndex);
+                document.getElementById('clue').textContent = `🎉 Your clue: "${clue}"`;
+                document.getElementById('clue').style.display = 'block';
+                document.getElementById('nextButton').style.display = 'block';
                 
-                if (currentAlgorithmIndex < algorithmSets[currentSet].length) {
-                    document.querySelector('.btn').textContent = 'Next';
+                if (team.currentAlgorithmIndex >= algorithms.length - 1) {
+                    showPopup("Congratulations! 🎉", "You have completed the treasure hunt!");
+                    document.getElementById('timer').textContent = 'Game Complete!';
                 } else {
-                    document.querySelector('.btn').textContent = '🎯 You have completed the treasure hunt!';
-                    document.querySelector('.btn').disabled = true;
+                    showPopup("Correct! ✨", "Well done! Click 'Next Question' when you're ready to continue.");
                 }
             } else {
-                document.getElementById("wrongSound").play();
-                document.getElementById('popup').style.display = 'none';
-                showWrongPopup("That's not correct. Try again!");
+                document.getElementById("wrongSound").play().catch(e => console.log("Audio play blocked"));
+                showPopup("Incorrect ❌", "Try again!");
+                document.getElementById('answer').value = '';
             }
         }
 
-        function showWrongPopup(message) {
-            document.getElementById('wrongMessage').textContent = message;
-            document.getElementById('wrongPopup').style.display = 'block';
-        }
-
-        function closeWrongPopup() {
-            document.getElementById('wrongPopup').style.display = 'none';
-            document.getElementById('popup').style.display = 'block';
+        function nextQuestion() {
+            let team = teamData[currentTeam];
+            team.currentAlgorithmIndex++;
             document.getElementById('answer').value = '';
+            loadAlgorithm();
+            startTimer();
         }
 
         function startTimer() {
             let timeLeft = 60;
             document.getElementById('timer').textContent = `Time Left: ${timeLeft}s`;
-            clearInterval(timer); // Clear any existing timer
+            clearInterval(timer);
             timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer').textContent = `Time Left: ${timeLeft}s`;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    showWrongPopup("Time's up! Try again.");
+                    showPopup("Time's Up! ⏰", "Game Over!");
                 }
             }, 1000);
         }
 
-        // Prevent copy shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x')) {
-                e.preventDefault();
-                return false;
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
             }
-        });
-
-        // Prevent right-click on popup
-        document.getElementById('popup').addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
         });
     </script>
 </body>
